@@ -15,7 +15,7 @@ use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of a content dimension
  */
 class Dimension extends ObjectType
 {
@@ -27,10 +27,25 @@ class Dimension extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'Dimension',
+            'description' => 'A content dimension'
         ], $configuration, [
-            // @TODO: implementation
-        ]))
+            'fields' => [
+                'name' => [
+                    'type' => Type::nonNull(Type::string()),
+                    'description' => 'Name of the content dimension',
+                    'resolve' => function(array $dimension) {
+                        return $dimension['name'];
+                    }
+                ],
+                'values' => [
+                    'type' => Type::listOf(Type::string()),
+                    'description' => 'Possible dimension values',
+                    'resolve' => function(array $dimension) {
+                        return $dimension['values'];
+                    }
+                ]
+            ]
+        ]));
     }
 }
