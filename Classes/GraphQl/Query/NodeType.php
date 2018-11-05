@@ -13,9 +13,10 @@ namespace Neos\Neos\Ui\GraphQl\Query;
 
 use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
+use Neos\ContentRepository\Domain\Model\NodeType;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of a node type
  */
 class NodeType extends ObjectType
 {
@@ -27,10 +28,111 @@ class NodeType extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'NodeType',
+            'description' => 'A node type',
         ], $configuration, [
-            // @TODO: implementation
+            'fields' => [
+                'name' => [
+                    'type' => Type::nonNull(Type::string()),
+                    'description' => '', // @TODO: Description for nodeType.name
+                    'resolve' => function (NodeType $nodeType) {
+                        return $nodeType->getName();
+                    }
+                ],
+                'declaredSuperTypes' => [
+                    'type' => Type::listOf(Type::nodeType()),
+                    'description' => '', // @TODO: Description for nodeType.declaredSuperTypes
+                    'resolve' => function (NodeType $nodeType) {
+                        return $nodeType->getDeclaredSuperTypes();
+                    }
+                ],
+                'isAggregate' => [
+                    'type' => Type::boolean(),
+                    'description' => '', // @TODO: Description for nodeType.isAggregate
+                    'resolve' => function (NodeType $nodeType) {
+                        return $nodeType->isAggregate();
+                    }
+                ],
+                'isOfType' => [
+                    'type' => Type::boolean(),
+                    'description' => '', // @TODO: Description for nodeType.isOfType
+                    'args' => [
+                        'nodeTypeName' => [
+                            'type' => Type::nonNull(Type::string()),
+                            'description' => '' // @TODO: Description for nodeType.isOfType arg
+                        ]
+                    ],
+                    'resolve' =>  function (NodeType $nodeType, array $arguments) {
+                        return $nodeType->isOfType($arguments['nodeTypeName']);
+                    }
+                ],
+                'hasConfiguration' => [
+                    'type' => Type::boolean(),
+                    'description' => '', // @TODO: Description for nodeType.hasConfiguration,
+                    'args' => [
+                        'path' => [
+                            'type' => Type::string(),
+                            'description' => '', // @TODO: Description for nodeType.hasConfiguration args
+                        ]
+                    ],
+                    'resolve' => function (NodeType $nodeType, array $arguments) {
+                        return $nodeType->hasConfiguration($arguments['path']);
+                    }
+                ],
+                'configuration' => [
+                    'type' => Type::json(),
+                    'description' => '', // @TODO: Description for nodeType.configuration,
+                    'args' => [
+                        'path' => [
+                            'type' => Type::string(),
+                            'description' => '', // @TODO: Description for nodeType.configuration args
+                        ]
+                    ],
+                    'resolve' => function (NodeType $nodeType, array $arguments) {
+                        return $nodeType->getConfiguration($arguments['path']);
+                    }
+                ],
+                'label' => [
+                    'type' => Type::string(),
+                    'description' => '', // @TODO: Description for nodeType.label,
+                    'resolve' => function (NodeType $nodeType) {
+                        return $nodeType->getLabel();
+                    }
+                ],
+                'options' => [
+                    'type' => Type::json(),
+                    'description' => '', // @TODO: Description for nodeType.options,
+                    'resolve' => function (NodeType $nodeType) {
+                        return $nodeType->getOptions();
+                    }
+                ],
+                'properties' => [
+                    'type' => Type::listOf(Type::property()),
+                    'description' => '', // @TODO: Description for nodeType.properties,
+                    'resolve' => function(NodeType $nodeType) {
+                        foreach ($nodeType->getProperties() as $name => $property) {
+                            yield [
+                                'name' => $name,
+                                'type' => $property['type'],
+                                'value' => $nodeType->getDefaultValueForProperty($name)
+                            ];
+                        }
+                    }
+                ],
+                'autoCreatedChildNodes' => [
+                    'type' => Type::listOf(Type::autoCreatedChildNode()),
+                    'description' => '', // @TODO: Description for nodeType.autoCreatedChildNodes,
+                    'resolve' => function (NodeType $nodeType) {
+                        foreach ($nodeType->getAutoCreatedChildNodes() as $name => $childNodeType) {
+                            yield [
+                                'name' => $name,
+                                'childNodeType' => $childNodeType,
+                                'owningNodeType' => $nodeType
+                            ];
+                        }
+                    }
+                ]
+            ]
         ]))
     }
 }

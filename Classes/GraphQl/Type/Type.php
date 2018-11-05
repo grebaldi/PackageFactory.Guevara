@@ -94,6 +94,11 @@ class Type extends GraphQl\Type
     private static $propertyValueType;
 
     /**
+     * @return JsonScalar
+     */
+    private static $json;
+
+    /**
      * @return Query\ContentContext
      */
     public static function contentContext() : Query\ContentContext
@@ -206,10 +211,18 @@ class Type extends GraphQl\Type
     }
 
     /**
-     * @return Query\UserPreferences
+     * @return PropertyValueType
      */
     public static function propertyValueType() : PropertyValueType
     {
         return self::$propertyValueType ?: (self::$propertyValueType = new PropertyValueType());
+    }
+
+    /**
+     * @return JsonScalar
+     */
+    public static function json() : JsonScalar
+    {
+        return self::$json ?: (self::$json = new JsonScalar());
     }
 }
