@@ -15,7 +15,7 @@ use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of a node property
  */
 class Property extends ObjectType
 {
@@ -27,10 +27,32 @@ class Property extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'Property',
+            'description' => 'A node property',
         ], $configuration, [
-            // @TODO: implementation
+            'fields' => [
+                'name' => [
+                    'type' => Type::nonNull(Type::string()),
+                    'description' => 'Name of the property',
+                    'resolve' => function(array $propertyDescriptor) {
+                        return $propertyDescriptor['name'];
+                    }
+                ],
+                'type' => [
+                    'type' => Type::nonNull(Type::string()),
+                    'description' => 'Type of the property',
+                    'resolve' => function(array $propertyDescriptor) {
+                        return $propertyDescriptor['type'];
+                    }
+                ],
+                'value' => [
+                    'type' => Type::propertyValueType(),
+                    'description' => 'Value of the property',
+                    'resolve' => function(array $propertyDescriptor) {
+                        return $propertyDescriptor['value'];
+                    }
+                ]
+            ]
         ]))
     }
 }

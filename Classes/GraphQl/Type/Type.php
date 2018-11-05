@@ -89,6 +89,11 @@ class Type extends GraphQl\Type
     private static  $userPreferences;
 
     /**
+     * @return PropertyValueType
+     */
+    private static $propertyValueType;
+
+    /**
      * @return Query\ContentContext
      */
     public static function contentContext() : Query\ContentContext
@@ -198,5 +203,13 @@ class Type extends GraphQl\Type
     public static function userPreferences() : Query\UserPreferences
     {
         return self::$userPreferences ?: (self::$userPreferences = new Query\UserPreferences());
+    }
+
+    /**
+     * @return Query\UserPreferences
+     */
+    public static function propertyValueType() : PropertyValueType
+    {
+        return self::$propertyValueType ?: (self::$propertyValueType = new PropertyValueType());
     }
 }
