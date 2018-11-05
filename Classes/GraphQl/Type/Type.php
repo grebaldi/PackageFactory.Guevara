@@ -104,6 +104,16 @@ class Type extends GraphQl\Type
     private static $json;
 
     /**
+     * @return ElectronicAddressTypeEnum
+     */
+    private static $electronicAddressType;
+
+    /**
+     * @return ElectronicAddressUsageEnum
+     */
+    private static $electronicAddressUsage;
+
+    /**
      * @return Query\ContentContext
      */
     public static function contentContext() : Query\ContentContext
@@ -237,5 +247,21 @@ class Type extends GraphQl\Type
     public static function json() : JsonScalar
     {
         return self::$json ?: (self::$json = new JsonScalar());
+    }
+
+    /**
+     * @return ElectronicAddressTypeEnum
+     */
+    public static function electronicAddressType() : ElectronicAddressTypeEnum
+    {
+        return self::$electronicAddressType ?: (self::$electronicAddressType = new ElectronicAddressTypeEnum());
+    }
+
+    /**
+     * @return ElectronicAddressUsageEnum
+     */
+    public static function electronicAddressUsage() : ElectronicAddressUsageEnum
+    {
+        return self::$electronicAddressUsage ?: (self::$electronicAddressUsage = new ElectronicAddressUsageEnum());
     }
 }
