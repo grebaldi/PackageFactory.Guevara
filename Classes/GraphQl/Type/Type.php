@@ -21,72 +21,77 @@ class Type extends GraphQl\Type
     /**
      * @var Query\ContentContext
      */
-    private static  $contentContext;
+    private static $contentContext;
 
     /**
      * @var Query\NodeType
      */
-    private static  $nodeType;
+    private static $nodeType;
 
     /**
      * @var Query\Node
      */
-    private static  $node;
+    private static $node;
 
     /**
      * @var Query\Workspace
      */
-    private static  $workspace;
+    private static $workspace;
 
     /**
      * @var Query\Property
      */
-    private static  $property;
+    private static $property;
 
     /**
      * @var Query\AutoCreatedChildNode
      */
-    private static  $autoCreatedChildNode;
+    private static $autoCreatedChildNode;
 
     /**
      * @var Query\Dimension
      */
-    private static  $dimension;
+    private static $dimension;
 
     /**
      * @var Query\TargetDimension
      */
-    private static  $targetDimension;
+    private static $targetDimension;
 
     /**
      * @var Query\User
      */
-    private static  $user;
+    private static $user;
 
     /**
      * @var Query\ElectronicAddress
      */
-    private static  $electronicAddress;
+    private static $electronicAddress;
 
     /**
      * @var Query\PersonName
      */
-    private static  $personName;
+    private static $personName;
 
     /**
      * @var Query\Account
      */
-    private static  $account;
+    private static $account;
 
     /**
      * @var Query\Role
      */
-    private static  $role;
+    private static $role;
 
     /**
      * @var Query\UserPreferences
      */
-    private static  $userPreferences;
+    private static $userPreferences;
+
+    /**
+     * @var Query\DateTime
+     */
+    private static $dateTime;
 
     /**
      * @return PropertyValueType
@@ -208,6 +213,14 @@ class Type extends GraphQl\Type
     public static function userPreferences() : Query\UserPreferences
     {
         return self::$userPreferences ?: (self::$userPreferences = new Query\UserPreferences());
+    }
+
+    /**
+     * @return Query\DateTime
+     */
+    public static function dateTime() : Query\DateTime
+    {
+        return self::$dateTime ?: (self::$dateTime = new Query\DateTime());
     }
 
     /**

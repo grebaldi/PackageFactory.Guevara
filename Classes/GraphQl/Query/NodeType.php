@@ -114,7 +114,7 @@ class NodeType extends ObjectType
                             yield [
                                 'name' => $name,
                                 'type' => $property['type'],
-                                'value' => $nodeType->getDefaultValueForProperty($name)
+                                'value' => isset($property['defaultValue']) ? $property['defaultValue'] : null
                             ];
                         }
                     }
