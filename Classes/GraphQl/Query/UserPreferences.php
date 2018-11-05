@@ -12,10 +12,12 @@ namespace Neos\Neos\Ui\GraphQl\Query;
  */
 
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\UnionType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
+use Neos\Neos\Domain\Model as Neos;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of neos user preferences
  */
 class UserPreferences extends ObjectType
 {
@@ -27,10 +29,50 @@ class UserPreferences extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'UserPreferences',
+            'description' => 'Neos user preferences',
         ], $configuration, [
-            // @TODO: implementation
-        ]))
+            'fields' => [
+                'get' => [
+                    'type' => new UnionType([
+                        'types' => [
+                            Type::int(),
+                            Type::float(),
+                            Type::string(),
+                            Type::json()
+                        ],
+                        'resolveType' => function ($value) {
+                            switch (true) {
+                                case is_int($value):
+                                    return Type::int();
+                                case is_float($value):
+                                    return Type::float();
+                                case is_string($value):
+                                    return Type::string();
+                                default:
+                                    return Type::json();
+                            }
+                        }
+                    ]),
+                    'description' => 'Get a cusom preference value',
+                    'args' => [
+                        'key' => [
+                            'type' => Type::nonNull(Type::string()),
+                            'description' => 'The preference key'
+                        ]
+                    ],
+                    'resolve' => function (Neos\UserPreferences $userPreferences, array $arguments) {
+                        return $userPreferences->get($arguments['key']);
+                    }
+                ],
+                'interfaceLanguage' => [
+                    'type' => Type::nonNull(Type::string()),
+                    'description' => 'The configured interface language',
+                    'resolve' => function (Neos\UserPreferences $userPreferences) {
+                        return $userPreferences->getInterfaceLanguage();
+                    }
+                ]
+            ]
+        ]));
     }
 }
