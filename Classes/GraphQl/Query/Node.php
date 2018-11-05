@@ -46,6 +46,13 @@ class Node extends ObjectType
                         return $node->getLabel();
                     }
                 ],
+                'context' => [
+                    'type' => Type::nonNUll(Type::contentContext()),
+                    'description' => 'The content context of the node',
+                    'resolve' => function (NodeInterface $node) {
+                        return $node->getContext();
+                    }
+                ],
                 'hasProperty' => [
                     'type' => Type::boolean(),
                     'description' => 'Indicates, whether the given property exists in this node',
@@ -64,7 +71,7 @@ class Node extends ObjectType
                     'description' => 'Get a specific property',
                     'args' => [
                         'propertyName' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'The property name'
                         ]
                     ],
@@ -192,7 +199,7 @@ class Node extends ObjectType
                     'description' => 'Retreive a node by path',
                     'args' => [
                         'path' => [
-                            'type' => Type::string(),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => 'The relative path of the target node'
                         ]
                     ],
