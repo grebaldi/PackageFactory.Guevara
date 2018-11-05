@@ -13,9 +13,10 @@ namespace Neos\Neos\Ui\GraphQl\Query;
 
 use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
+use neos\Neos\Domain\Model\User;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of a neos user
  */
 class User extends ObjectType
 {
@@ -27,10 +28,58 @@ class User extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'User',
+            'description' => 'A neos user',
         ], $configuration, [
-            // @TODO: implementation
+            'label' => [
+                'type' => Type::nonNull(Type::string()),
+                'description' => 'The label (full name) of the user',
+                'resolve' => function (User $user) {
+                    return $user->getLabel();
+                }
+            ],
+            'preferences' => [
+                'type' => Type::nonNull(Type::userPreferences()),
+                'description' => 'The user\'s preferences',
+                'resolve' => function (User $user) {
+                    return $user->getPreferences();
+                }
+            ],
+            'isActive' => [
+                'type' => Type::boolean(),
+                'description' => 'Indicates whether the user is active',
+                'resolve' => function (User $user) {
+                    return $user->isActive();
+                }
+            ],
+            'name' => [
+                'type' => Type::nonNull(Type::personName()),
+                'description' => 'The name of the user',
+                'resolve' => function (User $user) {
+                    return $user->getName();
+                }
+            ],
+            'electronicAddresses' => [
+                'type' => Type::listOf(Type::electronicAddress()),
+                'description' => 'All registered electronic addresses (e.g. email, twitter-handle, etc.) of the user',
+                'resolve' => function (User $user) {
+                    return $user->getElectronicAddresses();
+                }
+            ],
+            'primaryElectronicAddress' => [
+                'type' => Type::electronicAddress(),
+                'description' => 'The primary registered electronic address (e.g. email, twitter-handle, etc.) of the user',
+                'resolve' => function (User $user) {
+                    return $user->getPrimaryElectronicAddress();
+                }
+            ],
+            'accounts' => [
+                'type' => Type::listOf(Type::account()),
+                'description' => 'All accounts associated with this user',
+                'resolve' => function (User $user) {
+                    return $user->getAccounts();
+                }
+            ]
         ]))
     }
 }
