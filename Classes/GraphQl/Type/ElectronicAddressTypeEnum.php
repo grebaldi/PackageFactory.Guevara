@@ -35,6 +35,6 @@ final class ElectronicAddressTypeEnum extends EnumType
                 'TYPE_URL' => [ 'value' =>  ElectronicAddress::TYPE_URL],
                 'TYPE_YAHOO' => [ 'value' =>  ElectronicAddress::TYPE_YAHOO],
             ]
-        ])
+        ]);
     }
 }

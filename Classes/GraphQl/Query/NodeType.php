@@ -133,6 +133,6 @@ class NodeType extends ObjectType
                     }
                 ]
             ]
-        ]))
+        ]));
     }
 }

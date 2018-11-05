@@ -29,6 +29,6 @@ final class PropertyValueType extends GraphQl\UnionType
             'resolveType' => function () {
                 throw new Exception\NotImplementedYetException('PropertyValueType::resolveType');
             }
-        ])
+        ]);
     }
 }

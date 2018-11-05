@@ -53,6 +53,6 @@ class Property extends ObjectType
                     }
                 ]
             ]
-        ]))
+        ]));
     }
 }

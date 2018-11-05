@@ -31,40 +31,42 @@ class Account extends ObjectType
             'name' => 'Account', // @TODO: name
             'description' => 'An account', // @TODO: description
         ], $configuration, [
-            'accountIdentifier' => [
-                'type' => Type::string(),
-                'description' => 'The account identifier',
-                'resolve' => function (Security\Account $account) {
-                    return $account->getAccountIdentifier();
-                }
-            ],
-            'getRoles' => [
-                'type' => Type::listOf(Type::role()),
-                'description' => 'The roles of this account',
-                'resolve' => function (Security\Account $account) {
-                    return $account->getRoles();
-                }
-            ],
-            'hasRole' => [
-                'type' => Type::boolean(),
-                'description' => 'Indicates whether this account has the given role',
-                'args' => [
-                    'roleIdentifier' => [
-                        'type' => type::nonNull(Type::string()),
-                        'description' => 'The identifier of the role'
-                    ]
+            'fields' => [
+                'accountIdentifier' => [
+                    'type' => Type::string(),
+                    'description' => 'The account identifier',
+                    'resolve' => function (Security\Account $account) {
+                        return $account->getAccountIdentifier();
+                    }
                 ],
-                'resolve' => function (Security\Account $account, array $arguments) {
-                    return $account->hasRole($arguments['roleIdentifier']);
-                }
-            ],
-            'isActive' => [
-                'type' => Type::boolean(),
-                'description' => 'Indicates whether this account is active',
-                'resolve' => function (Security\Account $account) {
-                    return $account->isActive();
-                }
+                'getRoles' => [
+                    'type' => Type::listOf(Type::role()),
+                    'description' => 'The roles of this account',
+                    'resolve' => function (Security\Account $account) {
+                        return $account->getRoles();
+                    }
+                ],
+                'hasRole' => [
+                    'type' => Type::boolean(),
+                    'description' => 'Indicates whether this account has the given role',
+                    'args' => [
+                        'roleIdentifier' => [
+                            'type' => type::nonNull(Type::string()),
+                            'description' => 'The identifier of the role'
+                        ]
+                    ],
+                    'resolve' => function (Security\Account $account, array $arguments) {
+                        return $account->hasRole($arguments['roleIdentifier']);
+                    }
+                ],
+                'isActive' => [
+                    'type' => Type::boolean(),
+                    'description' => 'Indicates whether this account is active',
+                    'resolve' => function (Security\Account $account) {
+                        return $account->isActive();
+                    }
+                ]
             ]
-        ]))
+        ]));
     }
 }

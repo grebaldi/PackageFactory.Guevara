@@ -46,6 +46,6 @@ class DateTime extends ObjectType
                     }
                 ]
             ]
-        ]))
+        ]));
     }
 }

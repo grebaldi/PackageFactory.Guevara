@@ -28,6 +28,6 @@ final class ElectronicAddressUsageEnum extends EnumType
                 'USAGE_HOME' => [ 'value' =>  ElectronicAddress::USAGE_HOME],
                 'USAGE_WORK' => [ 'value' =>  ElectronicAddress::USAGE_WORK]
             ]
-        ])
+        ]);
     }
 }
