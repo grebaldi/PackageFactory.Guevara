@@ -13,9 +13,10 @@ namespace Neos\Neos\Ui\GraphQl\Query;
 
 use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
+use Neos\Party\Domain\Model as Party;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of a person name
  */
 class PersonName extends ObjectType
 {
@@ -27,10 +28,58 @@ class PersonName extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'PersonName',
+            'description' => 'A person name',
         ], $configuration, [
-            // @TODO: implementation
-        ]))
+            'firstName' => [
+                'type' => Type::string(),
+                'description' => 'The first name',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getFirstName();
+                }
+            ],
+            'middleName' => [
+                'type' => Type::string(),
+                'description' => 'The middle name',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getMiddleName();
+                }
+            ],
+            'lastName' => [
+                'type' => Type::string(),
+                'description' => 'The last name',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getLastName();
+                }
+            ],
+            'title' => [
+                'type' => Type::string(),
+                'description' => 'The title',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getTitle();
+                }
+            ],
+            'otherName' => [
+                'type' => Type::string(),
+                'description' => 'Another name',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getOtherName();
+                }
+            ],
+            'alias' => [
+                'type' => Type::string(),
+                'description' => 'An alias',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getAlias();
+                }
+            ],
+            'fullName' => [
+                'type' => Type::string(),
+                'description' => 'The full name',
+                'resolve' => function (Party\PersonName $personName) {
+                    return $personName->getFullName();
+                }
+            ]
+        ]));
     }
 }
