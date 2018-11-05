@@ -15,7 +15,7 @@ use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of an auto created child node
  */
 class AutoCreatedChildNode extends ObjectType
 {
@@ -27,10 +27,30 @@ class AutoCreatedChildNode extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'AutoCreatedChildNode',
+            'description' => 'An auto created child node',
         ], $configuration, [
-            // @TODO: implementation
+            'name' => [
+                'type' => Type::nonNull(Type::string()),
+                'description' => 'The name of the auto created child node',
+                'resolve' => function (array $autoCreatedChildNodeDescriptor) {
+                    return $autoCreatedChildNodeDescriptor['name'];
+                }
+            ],
+            'nodeType' => [
+                'type' => Type::nonNull(Type::nodeType()),
+                'description' => 'The node type of the auto created child node',
+                'resolve' => function (array $autoCreatedChildNodeDescriptor) {
+                    return $autoCreatedChildNodeDescriptor['childNodeType'];
+                }
+            ],
+            'owningNodeType' => [
+                'type' => Type::nonNull(Type::nodeType()),
+                'description' => 'The owning node type of the auto created child node',
+                'resolve' => function (array $autoCreatedChildNodeDescriptor) {
+                    return $autoCreatedChildNodeDescriptor['owningNodeType'];
+                }
+            ]
         ]))
     }
 }
