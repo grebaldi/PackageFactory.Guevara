@@ -13,9 +13,10 @@ namespace Neos\Neos\Ui\GraphQl\Query;
 
 use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
+use Neos\Flow\Security;
 
 /**
- * @TODO: Class Comment
+ * GraphQl representation of a flow account
  */
 class Account extends ObjectType
 {
@@ -27,10 +28,43 @@ class Account extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'Account', // @TODO: name
+            'description' => 'An account', // @TODO: description
         ], $configuration, [
-            // @TODO: implementation
+            'accountIdentifier' => [
+                'type' => Type::string(),
+                'description' => 'The account identifier',
+                'resolve' => function (Security\Account $account) {
+                    return $account->getAccountIdentifier();
+                }
+            ],
+            'getRoles' => [
+                'type' => Type::listOf(Type::role()),
+                'description' => 'The roles of this account',
+                'resolve' => function (Security\Account $account) {
+                    return $account->getRoles();
+                }
+            ],
+            'hasRole' => [
+                'type' => Type::boolean(),
+                'description' => 'Indicates whether this account has the given role',
+                'args' => [
+                    'roleIdentifier' => [
+                        'type' => type::nonNull(Type::string()),
+                        'description' => 'The identifier of the role'
+                    ]
+                ],
+                'resolve' => function (Security\Account $account, array $arguments) {
+                    return $account->hasRole($arguments['roleIdentifier']);
+                }
+            ],
+            'isActive' => [
+                'type' => Type::boolean(),
+                'description' => 'Indicates whether this account is active',
+                'resolve' => function (Security\Account $account) {
+                    return $account->isActive();
+                }
+            ]
         ]))
     }
 }

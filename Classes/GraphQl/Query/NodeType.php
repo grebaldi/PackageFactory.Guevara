@@ -13,7 +13,7 @@ namespace Neos\Neos\Ui\GraphQl\Query;
 
 use GraphQL\Type\Definition\ObjectType;
 use Neos\Neos\Ui\GraphQl\Type\Type;
-use Neos\ContentRepository\Domain\Model\NodeType;
+use Neos\ContentRepository\Domain\Model as ContentRepository;
 
 /**
  * GraphQl representation of a node type
@@ -35,21 +35,21 @@ class NodeType extends ObjectType
                 'name' => [
                     'type' => Type::nonNull(Type::string()),
                     'description' => '', // @TODO: Description for nodeType.name
-                    'resolve' => function (NodeType $nodeType) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType) {
                         return $nodeType->getName();
                     }
                 ],
                 'declaredSuperTypes' => [
                     'type' => Type::listOf(Type::nodeType()),
                     'description' => '', // @TODO: Description for nodeType.declaredSuperTypes
-                    'resolve' => function (NodeType $nodeType) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType) {
                         return $nodeType->getDeclaredSuperTypes();
                     }
                 ],
                 'isAggregate' => [
                     'type' => Type::boolean(),
                     'description' => '', // @TODO: Description for nodeType.isAggregate
-                    'resolve' => function (NodeType $nodeType) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType) {
                         return $nodeType->isAggregate();
                     }
                 ],
@@ -62,7 +62,7 @@ class NodeType extends ObjectType
                             'description' => '' // @TODO: Description for nodeType.isOfType arg
                         ]
                     ],
-                    'resolve' =>  function (NodeType $nodeType, array $arguments) {
+                    'resolve' =>  function (ContentRepository\NodeType $nodeType, array $arguments) {
                         return $nodeType->isOfType($arguments['nodeTypeName']);
                     }
                 ],
@@ -75,7 +75,7 @@ class NodeType extends ObjectType
                             'description' => '', // @TODO: Description for nodeType.hasConfiguration args
                         ]
                     ],
-                    'resolve' => function (NodeType $nodeType, array $arguments) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType, array $arguments) {
                         return $nodeType->hasConfiguration($arguments['path']);
                     }
                 ],
@@ -88,21 +88,21 @@ class NodeType extends ObjectType
                             'description' => '', // @TODO: Description for nodeType.configuration args
                         ]
                     ],
-                    'resolve' => function (NodeType $nodeType, array $arguments) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType, array $arguments) {
                         return $nodeType->getConfiguration($arguments['path']);
                     }
                 ],
                 'label' => [
                     'type' => Type::string(),
                     'description' => '', // @TODO: Description for nodeType.label,
-                    'resolve' => function (NodeType $nodeType) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType) {
                         return $nodeType->getLabel();
                     }
                 ],
                 'options' => [
                     'type' => Type::json(),
                     'description' => '', // @TODO: Description for nodeType.options,
-                    'resolve' => function (NodeType $nodeType) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType) {
                         return $nodeType->getOptions();
                     }
                 ],
@@ -122,7 +122,7 @@ class NodeType extends ObjectType
                 'autoCreatedChildNodes' => [
                     'type' => Type::listOf(Type::autoCreatedChildNode()),
                     'description' => '', // @TODO: Description for nodeType.autoCreatedChildNodes,
-                    'resolve' => function (NodeType $nodeType) {
+                    'resolve' => function (ContentRepository\NodeType $nodeType) {
                         foreach ($nodeType->getAutoCreatedChildNodes() as $name => $childNodeType) {
                             yield [
                                 'name' => $name,
