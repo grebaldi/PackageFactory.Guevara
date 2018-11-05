@@ -21,7 +21,7 @@ class NotImplementedYetException extends \Exception
     public function __construct($message = null, $code = 0, \Exception $previous = null)
     {
         parent::__construct(
-            $message ?: $this->getDebugMessage(),
+            $this->getDebugMessage($message),
             $code,
             $previous
         );
@@ -30,8 +30,15 @@ class NotImplementedYetException extends \Exception
     /**
      * @return string
      */
-    private function getDebugMessage(): string
+    private function getDebugMessage(string $message = null): string
     {
+        if ($message) {
+            return sprintf(
+                '%s has not been implemented yet',
+                $message
+            );
+        }
+
         return sprintf(
             '%s::%s has not been implemented yet',
             str_replace('_Original', '', debug_backtrace()[2]['class']),
