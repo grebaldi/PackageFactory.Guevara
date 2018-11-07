@@ -1,0 +1,6 @@
+roles:
+  'Neos.Neos:AbstractEditor':
+    privileges:
+      -
+        privilegeTarget: 'Neos.Neos.Ui:Backend.GraphQlPlayground'
+        permission: GRANT

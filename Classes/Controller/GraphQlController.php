@@ -14,6 +14,7 @@ namespace Neos\Neos\Ui\Controller;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\View\JsonView;
+use Neos\FluidAdaptor\View\TemplateView;
 use Neos\Neos\Ui\GraphQl\Query;
 use GraphQL\GraphQL;
 use GraphQL\Schema;
@@ -32,7 +33,8 @@ class GraphQlController extends ActionController
      * @var array
      */
     protected $viewFormatToObjectNameMap = [
-        'json' => JsonView::class
+        'json' => JsonView::class,
+        'html' => TemplateView::class
     ];
 
     /**
