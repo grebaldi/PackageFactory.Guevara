@@ -31,116 +31,118 @@ class ContentContext extends ObjectType
             'name' => 'ContentContext',
             'description' => 'A content context',
         ], $configuration, [
-            'fields' => [
-                'workspace' => [
-                    'type' => Type::workspace(),
-                    'description' => 'The workspace of this context',
-                    'resolve' => function (Context $context) {
-                        return $context->getWorkspace();
-                    }
-                ],
-                'currentDateTime' => [
-                    'type' => Type::dateTime(),
-                    'description' => 'The current date and time according to this context',
-                    'resolve' => function (Context $context) {
-                        return $context->getCurrentDateTime();
-                    }
-                ],
-                'rootNode' => [
-                    'type' => Type::nonNull(Type::node()),
-                    'description' => 'The root node',
-                    'resolve' => function (Context $context) {
-                        return $context->getRootNode();
-                    }
-                ],
-                'node' => [
-                    'type' => Type::node(),
-                    'description' => 'Retrieve a node by path',
-                    'args' => [
-                        'path' => [
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => 'The absolute path of the target node'
-                        ]
+            'fields' => function () {
+                return [
+                    'workspace' => [
+                        'type' => Type::workspace(),
+                        'description' => 'The workspace of this context',
+                        'resolve' => function (Context $context) {
+                            return $context->getWorkspace();
+                        }
                     ],
-                    'resolve' => function (Context $context, array $arguments) {
-                        return $context->getNode($arguments['path']);
-                    }
-                ],
-                'nodeByIdentifier' => [
-                    'type' => Type::node(),
-                    'description' => 'Retrieve a node by identifier',
-                    'args' => [
-                        'identifier' => [
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => 'The identifier of the target node'
-                        ]
+                    'currentDateTime' => [
+                        'type' => Type::dateTime(),
+                        'description' => 'The current date and time according to this context',
+                        'resolve' => function (Context $context) {
+                            return $context->getCurrentDateTime();
+                        }
                     ],
-                    'resolve' => function (Context $context, array $arguments) {
-                        return $context->getNodeByIdentifier($arguments['identifier']);
-                    }
-                ],
-                'nodeVariantsByIdentifier' => [
-                    'type' => Type::listOf(Type::node()),
-                    'description' => 'Retrieve all node variants by identifier',
-                    'args' => [
-                        'identifier' => [
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => 'The identifier of the target node'
-                        ]
+                    'rootNode' => [
+                        'type' => Type::nonNull(Type::node()),
+                        'description' => 'The root node',
+                        'resolve' => function (Context $context) {
+                            return $context->getRootNode();
+                        }
                     ],
-                    'resolve' => function (Context $context, array $arguments) {
-                        return $context->getNodeVariantsByIdentifier($arguments['identifier']);
-                    }
-                ],
-                'nodesOnPath' => [
-                    'type' => Type::listOf(Type::node()),
-                    'description' => 'Retrieve all nodes on the given path',
-                    'args' => [
-                        'path' => [
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => 'An absolute node path'
-                        ]
+                    'node' => [
+                        'type' => Type::node(),
+                        'description' => 'Retrieve a node by path',
+                        'args' => [
+                            'path' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => 'The absolute path of the target node'
+                            ]
+                        ],
+                        'resolve' => function (Context $context, array $arguments) {
+                            return $context->getNode($arguments['path']);
+                        }
                     ],
-                    'resolve' => function (Context $context, array $arguments) {
-                        return $context->getNodesOnPath($arguments['path']);
-                    }
-                ],
-                'isInvisibleContentShown' => [
-                    'type' => Type::boolean(),
-                    'description' => 'Indicates whether invisible content is made visible in this context',
-                    'resolve' => function (Context $context) {
-                        return $context->isInvisibleContentShown();
-                    }
-                ],
-                'isRemovedContentShown' => [
-                    'type' => Type::boolean(),
-                    'description' => 'Indicates whether removed content is made visible in this context',
-                    'resolve' => function (Context $context) {
-                        return $context->isRemovedContentShown();
-                    }
-                ],
-                'isInaccessibleContentShown' => [
-                    'type' => Type::boolean(),
-                    'description' => 'Indicates whether inaccessible content is made visible in this context',
-                    'resolve' => function (Context $context) {
-                        return $context->isInaccessibleContentShown();
-                    }
-                ],
-                'dimensions' => [
-                    'type' => Type::listOf(Type::dimension()),
-                    'description' => 'The content dimensions of this context',
-                    'resolve' => function (Context $context) {
-                        return $context->getDimensions();
-                    }
-                ],
-                'targetDimensions' => [
-                    'type' => Type::listOf(Type::targetDimension()),
-                    'description' => 'The target dimensions of this context',
-                    'resolve' => function (Context $context) {
-                        return $context->getTargetDimensions();
-                    }
-                ]
-            ]
+                    'nodeByIdentifier' => [
+                        'type' => Type::node(),
+                        'description' => 'Retrieve a node by identifier',
+                        'args' => [
+                            'identifier' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => 'The identifier of the target node'
+                            ]
+                        ],
+                        'resolve' => function (Context $context, array $arguments) {
+                            return $context->getNodeByIdentifier($arguments['identifier']);
+                        }
+                    ],
+                    'nodeVariantsByIdentifier' => [
+                        'type' => Type::listOf(Type::node()),
+                        'description' => 'Retrieve all node variants by identifier',
+                        'args' => [
+                            'identifier' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => 'The identifier of the target node'
+                            ]
+                        ],
+                        'resolve' => function (Context $context, array $arguments) {
+                            return $context->getNodeVariantsByIdentifier($arguments['identifier']);
+                        }
+                    ],
+                    'nodesOnPath' => [
+                        'type' => Type::listOf(Type::node()),
+                        'description' => 'Retrieve all nodes on the given path',
+                        'args' => [
+                            'path' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => 'An absolute node path'
+                            ]
+                        ],
+                        'resolve' => function (Context $context, array $arguments) {
+                            return $context->getNodesOnPath($arguments['path']);
+                        }
+                    ],
+                    'isInvisibleContentShown' => [
+                        'type' => Type::boolean(),
+                        'description' => 'Indicates whether invisible content is made visible in this context',
+                        'resolve' => function (Context $context) {
+                            return $context->isInvisibleContentShown();
+                        }
+                    ],
+                    'isRemovedContentShown' => [
+                        'type' => Type::boolean(),
+                        'description' => 'Indicates whether removed content is made visible in this context',
+                        'resolve' => function (Context $context) {
+                            return $context->isRemovedContentShown();
+                        }
+                    ],
+                    'isInaccessibleContentShown' => [
+                        'type' => Type::boolean(),
+                        'description' => 'Indicates whether inaccessible content is made visible in this context',
+                        'resolve' => function (Context $context) {
+                            return $context->isInaccessibleContentShown();
+                        }
+                    ],
+                    'dimensions' => [
+                        'type' => Type::listOf(Type::dimension()),
+                        'description' => 'The content dimensions of this context',
+                        'resolve' => function (Context $context) {
+                            return $context->getDimensions();
+                        }
+                    ],
+                    'targetDimensions' => [
+                        'type' => Type::listOf(Type::targetDimension()),
+                        'description' => 'The target dimensions of this context',
+                        'resolve' => function (Context $context) {
+                            return $context->getTargetDimensions();
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

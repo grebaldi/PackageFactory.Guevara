@@ -32,47 +32,30 @@ class UserPreferences extends ObjectType
             'name' => 'UserPreferences',
             'description' => 'Neos user preferences',
         ], $configuration, [
-            'fields' => [
-                'get' => [
-                    'type' => new UnionType([
-                        'types' => [
-                            Type::int(),
-                            Type::float(),
-                            Type::string(),
-                            Type::json()
+            'fields' => function () {
+                return [
+                    'get' => [
+                        'type' => Type::json(),
+                        'description' => 'Get a cusom preference value',
+                        'args' => [
+                            'key' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => 'The preference key'
+                            ]
                         ],
-                        'resolveType' => function ($value) {
-                            switch (true) {
-                                case is_int($value):
-                                    return Type::int();
-                                case is_float($value):
-                                    return Type::float();
-                                case is_string($value):
-                                    return Type::string();
-                                default:
-                                    return Type::json();
-                            }
+                        'resolve' => function (Neos\UserPreferences $userPreferences, array $arguments) {
+                            return $userPreferences->get($arguments['key']);
                         }
-                    ]),
-                    'description' => 'Get a cusom preference value',
-                    'args' => [
-                        'key' => [
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => 'The preference key'
-                        ]
                     ],
-                    'resolve' => function (Neos\UserPreferences $userPreferences, array $arguments) {
-                        return $userPreferences->get($arguments['key']);
-                    }
-                ],
-                'interfaceLanguage' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'The configured interface language',
-                    'resolve' => function (Neos\UserPreferences $userPreferences) {
-                        return $userPreferences->getInterfaceLanguage();
-                    }
-                ]
-            ]
+                    'interfaceLanguage' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'The configured interface language',
+                        'resolve' => function (Neos\UserPreferences $userPreferences) {
+                            return $userPreferences->getInterfaceLanguage();
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

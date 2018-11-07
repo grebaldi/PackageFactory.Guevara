@@ -30,22 +30,24 @@ class DateTime extends ObjectType
             'name' => 'DateTime',
             'description' => 'Date and Time',
         ], $configuration, [
-            'fields' => [
-                'format' => [
-                    'type' => Type::string(),
-                    'description' => 'Format date and time',
-                    'args' => [
-                        'format' => [
-                            'type' => Type::string(),
-                            'description' => 'The format, see http://php.net/manual/de/function.date.php',
-                            'defaultValue' => \DateTime::ATOM
-                        ]
-                    ],
-                    'resolve' => function (\DateTimeInterface $dateTime, array $arguments) {
-                        return $dateTime->format($arguments['format']);
-                    }
-                ]
-            ]
+            'fields' => function () {
+                return [
+                    'format' => [
+                        'type' => Type::string(),
+                        'description' => 'Format date and time',
+                        'args' => [
+                            'format' => [
+                                'type' => Type::string(),
+                                'description' => 'The format, see http://php.net/manual/de/function.date.php',
+                                'defaultValue' => \DateTime::ATOM
+                            ]
+                        ],
+                        'resolve' => function (\DateTimeInterface $dateTime, array $arguments) {
+                            return $dateTime->format($arguments['format']);
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

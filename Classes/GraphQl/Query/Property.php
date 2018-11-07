@@ -30,29 +30,31 @@ class Property extends ObjectType
             'name' => 'Property',
             'description' => 'A node property',
         ], $configuration, [
-            'fields' => [
-                'name' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'Name of the property',
-                    'resolve' => function(array $propertyDescriptor) {
-                        return $propertyDescriptor['name'];
-                    }
-                ],
-                'type' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'Type of the property',
-                    'resolve' => function(array $propertyDescriptor) {
-                        return $propertyDescriptor['type'];
-                    }
-                ],
-                'value' => [
-                    'type' => Type::propertyValueType(),
-                    'description' => 'Value of the property',
-                    'resolve' => function(array $propertyDescriptor) {
-                        return $propertyDescriptor['value'];
-                    }
-                ]
-            ]
+            'fields' => function () {
+                return [
+                    'name' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'Name of the property',
+                        'resolve' => function(array $propertyDescriptor) {
+                            return $propertyDescriptor['name'];
+                        }
+                    ],
+                    'type' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'Type of the property',
+                        'resolve' => function(array $propertyDescriptor) {
+                            return $propertyDescriptor['type'];
+                        }
+                    ],
+                    'value' => [
+                        'type' => Type::json(),
+                        'description' => 'Value of the property',
+                        'resolve' => function(array $propertyDescriptor) {
+                            return $propertyDescriptor['value'];
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

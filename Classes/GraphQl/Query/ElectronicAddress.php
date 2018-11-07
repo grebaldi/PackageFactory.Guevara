@@ -31,36 +31,38 @@ class ElectronicAddress extends ObjectType
             'name' => 'ElectronicAddress',
             'description' => 'An electronic address',
         ], $configuration, [
-            'fields' => [
-                'identifier' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'The electronic address type',
-                    'resolve' => function (Party\ElectronicAddress $electronicAddress) {
-                        return $electronicAddress->getIdentifier();
-                    }
-                ],
-                'type' => [
-                    'type' => Type::nonNull(Type::electronicAddressType()),
-                    'description' => 'The electronic address type',
-                    'resolve' => function (Party\ElectronicAddress $electronicAddress) {
-                        return $electronicAddress->getType();
-                    }
-                ],
-                'usage' => [
-                    'type' => Type::nonNull(Type::electronicAddressType()),
-                    'description' => 'The electronic address usage',
-                    'resolve' => function (Party\ElectronicAddress $electronicAddress) {
-                        return $electronicAddress->getUsage();
-                    }
-                ],
-                'isApproved' => [
-                    'type' => Type::boolean(),
-                    'description' => 'Indicates whether this electronic address has been approved',
-                    'resolve' => function (Party\ElectronicAddress $electronicAddress) {
-                        return $electronicAddress->isApproved();
-                    }
-                ]
-            ]
+            'fields' => function () {
+                return [
+                    'identifier' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'The electronic address type',
+                        'resolve' => function (Party\ElectronicAddress $electronicAddress) {
+                            return $electronicAddress->getIdentifier();
+                        }
+                    ],
+                    'type' => [
+                        'type' => Type::nonNull(Type::electronicAddressType()),
+                        'description' => 'The electronic address type',
+                        'resolve' => function (Party\ElectronicAddress $electronicAddress) {
+                            return $electronicAddress->getType();
+                        }
+                    ],
+                    'usage' => [
+                        'type' => Type::nonNull(Type::electronicAddressType()),
+                        'description' => 'The electronic address usage',
+                        'resolve' => function (Party\ElectronicAddress $electronicAddress) {
+                            return $electronicAddress->getUsage();
+                        }
+                    ],
+                    'isApproved' => [
+                        'type' => Type::boolean(),
+                        'description' => 'Indicates whether this electronic address has been approved',
+                        'resolve' => function (Party\ElectronicAddress $electronicAddress) {
+                            return $electronicAddress->isApproved();
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

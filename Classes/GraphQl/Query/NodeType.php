@@ -31,108 +31,110 @@ class NodeType extends ObjectType
             'name' => 'NodeType',
             'description' => 'A node type',
         ], $configuration, [
-            'fields' => [
-                'name' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => '', // @TODO: Description for nodeType.name
-                    'resolve' => function (ContentRepository\NodeType $nodeType) {
-                        return $nodeType->getName();
-                    }
-                ],
-                'declaredSuperTypes' => [
-                    'type' => Type::listOf(Type::nodeType()),
-                    'description' => '', // @TODO: Description for nodeType.declaredSuperTypes
-                    'resolve' => function (ContentRepository\NodeType $nodeType) {
-                        return $nodeType->getDeclaredSuperTypes();
-                    }
-                ],
-                'isAggregate' => [
-                    'type' => Type::boolean(),
-                    'description' => '', // @TODO: Description for nodeType.isAggregate
-                    'resolve' => function (ContentRepository\NodeType $nodeType) {
-                        return $nodeType->isAggregate();
-                    }
-                ],
-                'isOfType' => [
-                    'type' => Type::boolean(),
-                    'description' => '', // @TODO: Description for nodeType.isOfType
-                    'args' => [
-                        'nodeTypeName' => [
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => '' // @TODO: Description for nodeType.isOfType arg
-                        ]
-                    ],
-                    'resolve' =>  function (ContentRepository\NodeType $nodeType, array $arguments) {
-                        return $nodeType->isOfType($arguments['nodeTypeName']);
-                    }
-                ],
-                'hasConfiguration' => [
-                    'type' => Type::boolean(),
-                    'description' => '', // @TODO: Description for nodeType.hasConfiguration,
-                    'args' => [
-                        'path' => [
-                            'type' => Type::string(),
-                            'description' => '', // @TODO: Description for nodeType.hasConfiguration args
-                        ]
-                    ],
-                    'resolve' => function (ContentRepository\NodeType $nodeType, array $arguments) {
-                        return $nodeType->hasConfiguration($arguments['path']);
-                    }
-                ],
-                'configuration' => [
-                    'type' => Type::json(),
-                    'description' => '', // @TODO: Description for nodeType.configuration,
-                    'args' => [
-                        'path' => [
-                            'type' => Type::string(),
-                            'description' => '', // @TODO: Description for nodeType.configuration args
-                        ]
-                    ],
-                    'resolve' => function (ContentRepository\NodeType $nodeType, array $arguments) {
-                        return $nodeType->getConfiguration($arguments['path']);
-                    }
-                ],
-                'label' => [
-                    'type' => Type::string(),
-                    'description' => '', // @TODO: Description for nodeType.label,
-                    'resolve' => function (ContentRepository\NodeType $nodeType) {
-                        return $nodeType->getLabel();
-                    }
-                ],
-                'options' => [
-                    'type' => Type::json(),
-                    'description' => '', // @TODO: Description for nodeType.options,
-                    'resolve' => function (ContentRepository\NodeType $nodeType) {
-                        return $nodeType->getOptions();
-                    }
-                ],
-                'properties' => [
-                    'type' => Type::listOf(Type::property()),
-                    'description' => '', // @TODO: Description for nodeType.properties,
-                    'resolve' => function(NodeType $nodeType) {
-                        foreach ($nodeType->getProperties() as $name => $property) {
-                            yield [
-                                'name' => $name,
-                                'type' => $property['type'],
-                                'value' => isset($property['defaultValue']) ? $property['defaultValue'] : null
-                            ];
+            'fields' => function () {
+                return [
+                    'name' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => '', // @TODO: Description for nodeType.name
+                        'resolve' => function (ContentRepository\NodeType $nodeType) {
+                            return $nodeType->getName();
                         }
-                    }
-                ],
-                'autoCreatedChildNodes' => [
-                    'type' => Type::listOf(Type::autoCreatedChildNode()),
-                    'description' => '', // @TODO: Description for nodeType.autoCreatedChildNodes,
-                    'resolve' => function (ContentRepository\NodeType $nodeType) {
-                        foreach ($nodeType->getAutoCreatedChildNodes() as $name => $childNodeType) {
-                            yield [
-                                'name' => $name,
-                                'childNodeType' => $childNodeType,
-                                'owningNodeType' => $nodeType
-                            ];
+                    ],
+                    'declaredSuperTypes' => [
+                        'type' => Type::listOf(Type::nodeType()),
+                        'description' => '', // @TODO: Description for nodeType.declaredSuperTypes
+                        'resolve' => function (ContentRepository\NodeType $nodeType) {
+                            return $nodeType->getDeclaredSuperTypes();
                         }
-                    }
-                ]
-            ]
+                    ],
+                    'isAggregate' => [
+                        'type' => Type::boolean(),
+                        'description' => '', // @TODO: Description for nodeType.isAggregate
+                        'resolve' => function (ContentRepository\NodeType $nodeType) {
+                            return $nodeType->isAggregate();
+                        }
+                    ],
+                    'isOfType' => [
+                        'type' => Type::boolean(),
+                        'description' => '', // @TODO: Description for nodeType.isOfType
+                        'args' => [
+                            'nodeTypeName' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => '' // @TODO: Description for nodeType.isOfType arg
+                            ]
+                        ],
+                        'resolve' =>  function (ContentRepository\NodeType $nodeType, array $arguments) {
+                            return $nodeType->isOfType($arguments['nodeTypeName']);
+                        }
+                    ],
+                    'hasConfiguration' => [
+                        'type' => Type::boolean(),
+                        'description' => '', // @TODO: Description for nodeType.hasConfiguration,
+                        'args' => [
+                            'path' => [
+                                'type' => Type::string(),
+                                'description' => '', // @TODO: Description for nodeType.hasConfiguration args
+                            ]
+                        ],
+                        'resolve' => function (ContentRepository\NodeType $nodeType, array $arguments) {
+                            return $nodeType->hasConfiguration($arguments['path']);
+                        }
+                    ],
+                    'configuration' => [
+                        'type' => Type::json(),
+                        'description' => '', // @TODO: Description for nodeType.configuration,
+                        'args' => [
+                            'path' => [
+                                'type' => Type::string(),
+                                'description' => '', // @TODO: Description for nodeType.configuration args
+                            ]
+                        ],
+                        'resolve' => function (ContentRepository\NodeType $nodeType, array $arguments) {
+                            return $nodeType->getConfiguration($arguments['path']);
+                        }
+                    ],
+                    'label' => [
+                        'type' => Type::string(),
+                        'description' => '', // @TODO: Description for nodeType.label,
+                        'resolve' => function (ContentRepository\NodeType $nodeType) {
+                            return $nodeType->getLabel();
+                        }
+                    ],
+                    'options' => [
+                        'type' => Type::json(),
+                        'description' => '', // @TODO: Description for nodeType.options,
+                        'resolve' => function (ContentRepository\NodeType $nodeType) {
+                            return $nodeType->getOptions();
+                        }
+                    ],
+                    'properties' => [
+                        'type' => Type::listOf(Type::property()),
+                        'description' => '', // @TODO: Description for nodeType.properties,
+                        'resolve' => function(NodeType $nodeType) {
+                            foreach ($nodeType->getProperties() as $name => $property) {
+                                yield [
+                                    'name' => $name,
+                                    'type' => $property['type'],
+                                    'value' => isset($property['defaultValue']) ? $property['defaultValue'] : null
+                                ];
+                            }
+                        }
+                    ],
+                    'autoCreatedChildNodes' => [
+                        'type' => Type::listOf(Type::autoCreatedChildNode()),
+                        'description' => '', // @TODO: Description for nodeType.autoCreatedChildNodes,
+                        'resolve' => function (ContentRepository\NodeType $nodeType) {
+                            foreach ($nodeType->getAutoCreatedChildNodes() as $name => $childNodeType) {
+                                yield [
+                                    'name' => $name,
+                                    'childNodeType' => $childNodeType,
+                                    'owningNodeType' => $nodeType
+                                ];
+                            }
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

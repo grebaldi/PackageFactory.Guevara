@@ -11,14 +11,22 @@ namespace Neos\Neos\Ui\GraphQl\Query;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use GraphQL\Type\Definition\ObjectType;
+use Neos\Neos\Domain\Service\ContentContextFactory;
 use Neos\Neos\Ui\GraphQl\Type\Type;
 
 /**
- * @TODO: Class Comment
+ * Root query for the neos user interface
  */
 class Root extends ObjectType
 {
+    /**
+     * @Flow\Inject
+     * @var ContentContextFactory
+     */
+    protected $contentContextFactory;
+
     /**
      * Constructor
      *
@@ -27,10 +35,31 @@ class Root extends ObjectType
     public function __construct(array $configuration = [])
     {
         return parent::__construct(array_merge([
-            'name' => '', // @TODO: name
-            'description' => '', // @TODO: description
+            'name' => 'Query',
+            'description' => 'The Neos.Ui Root Query',
         ], $configuration, [
-            // @TODO: implementation
-        ]))
+            'fields' => function () {
+                return [
+                    'contentContext' => [
+                        'type' => Type::nonNull(Type::contentContext()),
+                        'description' => 'A content context',
+                        'args' => [
+                            'properties' => [
+                                'type' => Type::contentContextPropertiesInput(),
+                                'description' => 'Properties of the context',
+                                'defaultValue' => [
+                                    'workspaceName' => 'live',
+                                    'invisibleContentShown' => true,
+                                    'inaccessibleContentShown' => true
+                                ]
+                            ]
+                        ],
+                        'resolve' => function ($_, array $arguments) {
+                            return $this->contentContextFactory->create($arguments['properties']);
+                        }
+                    ]
+                ];
+            }
+        ]));
     }
 }

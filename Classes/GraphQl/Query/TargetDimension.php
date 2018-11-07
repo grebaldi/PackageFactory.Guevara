@@ -30,22 +30,24 @@ class TargetDimension extends ObjectType
             'name' => 'TargetDimension',
             'description' => 'A target dimension'
         ], $configuration, [
-            'fields' => [
-                'name' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'Name of the content dimension',
-                    'resolve' => function(array $targetDimension) {
-                        return $targetDimension['name'];
-                    }
-                ],
-                'value' => [
-                    'type' => Type::listOf(Type::string()),
-                    'description' => 'Possible dimension values',
-                    'resolve' => function(array $targetDimension) {
-                        return $targetDimension['value'];
-                    }
-                ]
-            ]
-        ]))
+            'fields' => function () {
+                return [
+                    'name' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'Name of the content dimension',
+                        'resolve' => function(array $targetDimension) {
+                            return $targetDimension['name'];
+                        }
+                    ],
+                    'value' => [
+                        'type' => Type::listOf(Type::string()),
+                        'description' => 'Possible dimension values',
+                        'resolve' => function(array $targetDimension) {
+                            return $targetDimension['value'];
+                        }
+                    ]
+                ];
+            }
+        ]));
     }
 }

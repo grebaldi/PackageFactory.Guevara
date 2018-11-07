@@ -1,0 +1,16 @@
+-
+  name: 'GraphQl Playground'
+  uriPattern: 'playground'
+  defaults:
+    '@controller': 'GraphQl'
+    '@action': 'index'
+  appendExceedingArguments: true
+
+-
+  name: 'GraphQl Endpoint'
+  uriPattern: 'endpoint'
+  defaults:
+    '@controller': 'GraphQl'
+    '@action': 'endpoint'
+    '@format': 'json'
+  appendExceedingArguments: true

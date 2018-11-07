@@ -30,29 +30,31 @@ class AutoCreatedChildNode extends ObjectType
             'name' => 'AutoCreatedChildNode',
             'description' => 'An auto created child node',
         ], $configuration, [
-            'fields' => [
-                'name' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'The name of the auto created child node',
-                    'resolve' => function (array $autoCreatedChildNodeDescriptor) {
-                        return $autoCreatedChildNodeDescriptor['name'];
-                    }
-                ],
-                'nodeType' => [
-                    'type' => Type::nonNull(Type::nodeType()),
-                    'description' => 'The node type of the auto created child node',
-                    'resolve' => function (array $autoCreatedChildNodeDescriptor) {
-                        return $autoCreatedChildNodeDescriptor['childNodeType'];
-                    }
-                ],
-                'owningNodeType' => [
-                    'type' => Type::nonNull(Type::nodeType()),
-                    'description' => 'The owning node type of the auto created child node',
-                    'resolve' => function (array $autoCreatedChildNodeDescriptor) {
-                        return $autoCreatedChildNodeDescriptor['owningNodeType'];
-                    }
-                ]
-            ]
+            'fields' => function () {
+                return [
+                    'name' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'The name of the auto created child node',
+                        'resolve' => function (array $autoCreatedChildNodeDescriptor) {
+                            return $autoCreatedChildNodeDescriptor['name'];
+                        }
+                    ],
+                    'nodeType' => [
+                        'type' => Type::nonNull(Type::nodeType()),
+                        'description' => 'The node type of the auto created child node',
+                        'resolve' => function (array $autoCreatedChildNodeDescriptor) {
+                            return $autoCreatedChildNodeDescriptor['childNodeType'];
+                        }
+                    ],
+                    'owningNodeType' => [
+                        'type' => Type::nonNull(Type::nodeType()),
+                        'description' => 'The owning node type of the auto created child node',
+                        'resolve' => function (array $autoCreatedChildNodeDescriptor) {
+                            return $autoCreatedChildNodeDescriptor['owningNodeType'];
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

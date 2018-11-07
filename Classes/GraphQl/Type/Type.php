@@ -12,6 +12,7 @@ namespace Neos\Neos\Ui\GraphQl\Type;
  */
 
 use GraphQL\Type\Definition as GraphQl;
+use Neos\Neos\Ui\GraphQl\Query;
 
 /**
  * Expanded Type index containing base types and Neos-specific types
@@ -22,6 +23,11 @@ class Type extends GraphQl\Type
      * @var Query\ContentContext
      */
     private static $contentContext;
+
+    /**
+     * @var ContentContextPropertiesInput
+     */
+    private static $contentContextPropertiesInput;
 
     /**
      * @var Query\NodeType
@@ -89,14 +95,14 @@ class Type extends GraphQl\Type
     private static $userPreferences;
 
     /**
-     * @var Query\DateTime
+     * @var DateTimeScalarTime
      */
     private static $dateTime;
 
     /**
-     * @return PropertyValueType
+     * @var DateTimeScalar
      */
-    private static $propertyValueType;
+    private static $dateTimeScalar;
 
     /**
      * @return JsonScalar
@@ -119,6 +125,14 @@ class Type extends GraphQl\Type
     public static function contentContext() : Query\ContentContext
     {
         return self::$contentContext ?: (self::$contentContext = new Query\ContentContext());
+    }
+
+    /**
+     * @return ContentContextPropertiesInput
+     */
+    public static function contentContextPropertiesInput() : ContentContextPropertiesInput
+    {
+        return self::$contentContextPropertiesInput ?: (self::$contentContextPropertiesInput = new ContentContextPropertiesInput());
     }
 
     /**
@@ -234,11 +248,11 @@ class Type extends GraphQl\Type
     }
 
     /**
-     * @return PropertyValueType
+     * @return DateTimeScalar
      */
-    public static function propertyValueType() : PropertyValueType
+    public static function dateTimeScalar() : DateTimeScalar
     {
-        return self::$propertyValueType ?: (self::$propertyValueType = new PropertyValueType());
+        return self::$dateTimeScalar ?: (self::$dateTimeScalar = new DateTimeScalar());
     }
 
     /**

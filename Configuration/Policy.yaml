@@ -15,12 +15,18 @@ privilegeTargets:
     'Neos.Neos.Ui:Backend.ServiceAccess':
       matcher: 'method(Neos\Neos\Ui\Controller\BackendServiceController->.*())'
 
+    'Neos.Neos.Ui:Backend.GraphQlPlayground':
+      matcher: 'method(Neos\Neos\Ui\Controller\GraphQlController->(index|endpoint)Action())'
+
 roles:
 
     'Neos.Flow:Everybody':
       privileges:
         -
           privilegeTarget: 'Neos.Neos.Ui:BackendLogin'
+          permission: GRANT
+        -
+          privilegeTarget: 'Neos.Neos.Ui:Backend.GraphQlPlayground'
           permission: GRANT
 
     'Neos.Neos:AbstractEditor':

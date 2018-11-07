@@ -31,57 +31,59 @@ class PersonName extends ObjectType
             'name' => 'PersonName',
             'description' => 'A person name',
         ], $configuration, [
-            'fields' => [
-                'firstName' => [
-                    'type' => Type::string(),
-                    'description' => 'The first name',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getFirstName();
-                    }
-                ],
-                'middleName' => [
-                    'type' => Type::string(),
-                    'description' => 'The middle name',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getMiddleName();
-                    }
-                ],
-                'lastName' => [
-                    'type' => Type::string(),
-                    'description' => 'The last name',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getLastName();
-                    }
-                ],
-                'title' => [
-                    'type' => Type::string(),
-                    'description' => 'The title',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getTitle();
-                    }
-                ],
-                'otherName' => [
-                    'type' => Type::string(),
-                    'description' => 'Another name',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getOtherName();
-                    }
-                ],
-                'alias' => [
-                    'type' => Type::string(),
-                    'description' => 'An alias',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getAlias();
-                    }
-                ],
-                'fullName' => [
-                    'type' => Type::string(),
-                    'description' => 'The full name',
-                    'resolve' => function (Party\PersonName $personName) {
-                        return $personName->getFullName();
-                    }
-                ]
-            ]
+            'fields' => function () {
+                return [
+                    'firstName' => [
+                        'type' => Type::string(),
+                        'description' => 'The first name',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getFirstName();
+                        }
+                    ],
+                    'middleName' => [
+                        'type' => Type::string(),
+                        'description' => 'The middle name',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getMiddleName();
+                        }
+                    ],
+                    'lastName' => [
+                        'type' => Type::string(),
+                        'description' => 'The last name',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getLastName();
+                        }
+                    ],
+                    'title' => [
+                        'type' => Type::string(),
+                        'description' => 'The title',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getTitle();
+                        }
+                    ],
+                    'otherName' => [
+                        'type' => Type::string(),
+                        'description' => 'Another name',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getOtherName();
+                        }
+                    ],
+                    'alias' => [
+                        'type' => Type::string(),
+                        'description' => 'An alias',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getAlias();
+                        }
+                    ],
+                    'fullName' => [
+                        'type' => Type::string(),
+                        'description' => 'The full name',
+                        'resolve' => function (Party\PersonName $personName) {
+                            return $personName->getFullName();
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

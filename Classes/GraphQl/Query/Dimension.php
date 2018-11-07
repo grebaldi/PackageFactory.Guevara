@@ -30,22 +30,24 @@ class Dimension extends ObjectType
             'name' => 'Dimension',
             'description' => 'A content dimension'
         ], $configuration, [
-            'fields' => [
-                'name' => [
-                    'type' => Type::nonNull(Type::string()),
-                    'description' => 'Name of the content dimension',
-                    'resolve' => function(array $dimension) {
-                        return $dimension['name'];
-                    }
-                ],
-                'values' => [
-                    'type' => Type::listOf(Type::string()),
-                    'description' => 'Possible dimension values',
-                    'resolve' => function(array $dimension) {
-                        return $dimension['values'];
-                    }
-                ]
-            ]
+            'fields' => function () {
+                return [
+                    'name' => [
+                        'type' => Type::nonNull(Type::string()),
+                        'description' => 'Name of the content dimension',
+                        'resolve' => function(array $dimension) {
+                            return $dimension['name'];
+                        }
+                    ],
+                    'values' => [
+                        'type' => Type::listOf(Type::string()),
+                        'description' => 'Possible dimension values',
+                        'resolve' => function(array $dimension) {
+                            return $dimension['values'];
+                        }
+                    ]
+                ];
+            }
         ]));
     }
 }

@@ -29,6 +29,21 @@
       suffix:  'Service'
 
 ##
+# GraphQl
+
+-
+  name:  'GraphQl API'
+  uriPattern: 'neos/ui-graphql/<GraphQlSubRoutes>'
+  defaults:
+    '@package':    'Neos.Neos.Ui'
+    '@action':     'index'
+    '@format':     'html'
+  subRoutes:
+    'GraphQlSubRoutes':
+      package: 'Neos.Neos.Ui'
+      suffix:  'GraphQl'
+
+##
 # Deprecated fallback for users used to that URI
 -
   name: 'Backend Login New UI Route'
