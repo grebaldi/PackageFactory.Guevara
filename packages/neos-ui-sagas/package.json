@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@neos-project/neos-ui-extensibility": "1.4.1",
+        "@neos-project/neos-ui-graphql": "1.4.1",
         "@neos-project/neos-ui-validators": "1.4.1",
         "@neos-project/utils-redux": "1.4.1"
     },
