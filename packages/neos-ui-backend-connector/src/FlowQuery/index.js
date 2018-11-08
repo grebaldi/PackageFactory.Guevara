@@ -83,6 +83,7 @@ export default routes => {
     // The main API factory which will return it's own mechanism as well as the chained middlewares.
     //
     const q = (context, ignoreMiddleware = false) => {
+        console.warn(`DEPRECATION WARNING: The usage of the FlowQuery (q(...)) API is discouraged in favor of GraphQL`);
         if (isObject(context) && $get('contextPath', context)) {
             context = [$get('contextPath', context)];
         } else if (isString(context)) {
