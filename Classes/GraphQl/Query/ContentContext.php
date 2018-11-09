@@ -140,6 +140,76 @@ class ContentContext extends ObjectType
                         'resolve' => function (Context $context) {
                             return $context->getTargetDimensions();
                         }
+                    ],
+                    'flatTree' => [
+                        'type' => Type::listOf(Type::node()),
+                        'description' => 'Get a flat list of nodes within a tree of given depth',
+                        'args' => [
+                            'startingPoint' => [
+                                'type' => Type::nonNull(Type::string()),
+                                'description' => 'Identifier of the node that acts as a starting point'
+                            ],
+                            'depth' => [
+                                'type' => Type::int(),
+                                'description' => 'Depth of the tree. A value of 0 means unlimited loading depth',
+                                'defaultValue' => 1
+                            ],
+                            'nodeTypeFilter' => [
+                                'type' => Type::string(),
+                                'description' => 'An optional node type filter',
+                                'defaultValue' => null
+                            ],
+                            'whiteListNodes' => [
+                                'type' => Type::string(),
+                                'description' => 'List of node identifiers to explicitly include in the list (all other ndoes will be omitted)',
+                                'defaultValue' => null
+                            ],
+                            'blackListNodes' => [
+                                'type' => Type::string(),
+                                'description' => 'List of node identifiers to explicitly exclude in the list (all other ndoes will be included)',
+                                'defaultValue' => null
+                            ]
+                        ],
+                        'resolve' => function (Context $context, array $arguments) {
+                            \GraphQL\Utils::invariant(
+                                $arguments['depth'] >= 0,
+                                'Depth must be greater than or equal to 0.'
+                            );
+
+                            \GraphQL\Utils::invariant(
+                                $arguments['whiteListNodes'] === null || $arguments['blackListNodes'] === null,
+                                'The arguments "whiteListNodes" and "blackListNodes" cannot be used simultaneously'
+                            );
+
+                            $startingPoint = $context->getNodeByIdentifier($arguments['startingPoint']);
+
+                            \GraphQL\Utils::invariant(
+                                $startingPoint !== null,
+                                'The startingPoint node must exist.'
+                            );
+
+                            $nodes = [$startingPoint];
+                            $gatherNodesRecursively = function ($baseNode, $level = 0) use (&$gatherNodesRecursively, &$nodes, $arguments) {
+                                if ((
+                                    $level < $arguments['depth'] || // load all nodes within loadingDepth
+                                    $arguments['depth'] === 0 // unlimited loadingDepth
+                                ) && (
+                                    $arguments['whiteListNodes'] === null ||
+                                    in_array($baseNode->getIdentifier(), $arguments['whiteListNodes'])
+                                ) && (
+                                    $arguments['blackListNodes'] === null ||
+                                    !in_array($baseNode->getIdentifier(), $arguments['blackListNodes'])
+                                )) {
+                                    foreach ($baseNode->getChildNodes($arguments['nodeTypeFilter']) as $childNode) {
+                                        $nodes[] = $childNode;
+                                        $gatherNodesRecursively($childNode, $level + 1);
+                                    }
+                                }
+                            };
+                            $gatherNodesRecursively($startingPoint);
+
+                            return $nodes;
+                        }
                     ]
                 ];
             }
