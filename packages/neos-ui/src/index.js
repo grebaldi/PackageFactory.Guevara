@@ -14,6 +14,7 @@ import {SynchronousMetaRegistry} from '@neos-project/neos-ui-extensibility/src/r
 import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
+import {createClient} from '@neos-project/neos-ui-graphql';
 
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
@@ -71,11 +72,16 @@ function * application() {
     const routes = yield system.getRoutes;
 
     //
+    // Initialize GraphQl client
+    //
+    const graphqlClient = createClient(routes.graphql);
+
+    //
     // Initialize extensions
     //
     manifests
         .map(manifest => manifest[Object.keys(manifest)[0]])
-        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration, configuration, routes}));
+        .forEach(({bootstrap}) => bootstrap(globalRegistry, {store, frontendConfiguration, configuration, routes, graphqlClient}));
 
     const reducers = globalRegistry.get('reducers').getAllAsList().map(element => element.reducer);
     delegatingReducer.setReducer(handleActions(reducers));
@@ -83,7 +89,7 @@ function * application() {
     //
     // Bootstrap the saga middleware with initial sagas
     //
-    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration}));
+    globalRegistry.get('sagas').getAllAsList().forEach(element => sagaMiddleWare.run(element.saga, {store, globalRegistry, configuration, graphqlClient}));
 
     //
     // Tell everybody, that we're booting now

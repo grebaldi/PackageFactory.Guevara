@@ -187,6 +187,12 @@ backend = Neos.Fusion:Template {
                 action = 'logout'
             }
         }
+        graphql = Neos.Fusion:UriBuilder {
+            package = 'Neos.Neos.Ui'
+            controller = 'GraphQl'
+            action = 'endpoint'
+            format = 'json'
+        }
         @process.json = ${Json.stringify(value)}
     }
 

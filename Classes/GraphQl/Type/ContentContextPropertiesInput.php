@@ -39,7 +39,7 @@ class ContentContextPropertiesInput extends InputObjectType
                     'description' => 'The current date time according to the content context'
                 ],
                 'dimensions' => [
-                    'type' => new InputObjectType([
+                    'type' => Type::listOf(new InputObjectType([
                         'name' => 'Dimensions',
                         'description' => 'A set of content dimensions',
                         'fields' => [
@@ -50,10 +50,10 @@ class ContentContextPropertiesInput extends InputObjectType
                                 'type' => Type::listOf(Type::nonNull(Type::string()))
                             ]
                         ]
-                    ])
+                    ]))
                 ],
                 'targetDimensions' => [
-                    'type' => new InputObjectType([
+                    'type' => Type::listOf(new InputObjectType([
                         'name' => 'TargetDimensions',
                         'description' => 'A set of target dimensions',
                         'fields' => [
@@ -64,7 +64,7 @@ class ContentContextPropertiesInput extends InputObjectType
                                 'type' => Type::nonNull(Type::string())
                             ]
                         ]
-                    ])
+                    ]))
                 ],
                 'invisibleContentShown' => [
                     'type' => Type::boolean(),

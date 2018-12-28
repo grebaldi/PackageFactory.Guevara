@@ -2,12 +2,13 @@ import {map, keys} from 'ramda';
 
 import {handleActions} from '@neos-project/utils-redux';
 
+import * as ContentContext from './ContentContext/index';
 import * as ContentDimensions from './ContentDimensions/index';
 import * as Images from './Images/index';
 import * as Nodes from './Nodes/index';
 import * as Workspaces from './Workspaces/index';
 
-const all = {ContentDimensions, Images, Nodes, Workspaces};
+const all = {ContentContext, ContentDimensions, Images, Nodes, Workspaces};
 
 //
 // Export the actionTypes
