@@ -49,6 +49,8 @@ require('@neos-project/neos-ui-validators/src/manifest');
 require('@neos-project/neos-ui-i18n/src/manifest');
 require('@neos-project/neos-ui-sagas/src/manifest');
 
+alert(document.currentScript.dataset.configuration);
+
 //
 // The main application
 //

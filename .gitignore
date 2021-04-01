@@ -1,3 +1,4 @@
+
 #
 # Test suite & generated coverage.
 #
@@ -21,8 +22,11 @@ Build/Selenium/Settings.yaml
 #
 # Application & development dependencies.
 #
+bin/
+Packages/
 node_modules/
 packages/*/yarn.lock
+composer.lock
 
 #
 # Compiled assets.

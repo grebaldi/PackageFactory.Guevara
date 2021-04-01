@@ -1,0 +1,9 @@
+Neos\Neos\Ui\Infrastructure\Http\GraphQLMiddleware:
+  properties:
+    cache:
+      object:
+        factoryObjectName: Neos\Cache\Psr\SimpleCache\CacheFactory
+        factoryMethodName: create
+        arguments:
+          1:
+            value: Neos_Ui_GraphQL

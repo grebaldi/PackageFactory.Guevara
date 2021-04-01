@@ -61,8 +61,8 @@ class StyleAndJavascriptInclusionService
 
     public function getHeadScripts()
     {
-        return $this->build($this->javascriptResources, function ($uri, $defer) {
-            return '<script src="' . $uri . '" ' . $defer . '></script>';
+        return $this->build($this->javascriptResources, function ($uri, $defer, $configuration) {
+            return '<script src="' . $uri . '" ' . implode(' ', array_filter([$defer, $configuration])) . '></script>';
         });
     }
 
@@ -89,6 +89,16 @@ class StyleAndJavascriptInclusionService
                 );
             }
 
+            $configurationExpression = $element['configuration'] ?? '';
+            if (substr($configurationExpression, 0, 2) === '${' && substr($configurationExpression, -1) === '}') {
+                $configurationExpression = Utility::evaluateEelExpression(
+                    $configurationExpression,
+                    $this->eelEvaluator,
+                    [],
+                    array_merge($this->fusionDefaultEelContext, $this->additionalEelDefaultContext)
+                );
+            }
+
             $hash = null;
 
             if (strpos($resourceExpression, 'resource://') === 0) {
@@ -98,7 +108,8 @@ class StyleAndJavascriptInclusionService
             }
             $finalUri = $hash ? $resourceExpression . '?' . $hash : $resourceExpression;
             $defer = key_exists('defer', $element) && $element['defer'] ? 'defer ' : '';
-            $result .= $builderForLine($finalUri, $defer);
+            $configuration = $configurationExpression ? sprintf('data-configuration="%s"', htmlspecialchars(json_encode($configurationExpression))) : null;
+            $result .= $builderForLine($finalUri, $defer, $configuration);
         }
 
         return $result;

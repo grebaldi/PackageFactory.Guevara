@@ -43,6 +43,7 @@ Neos:
             position: 'start 1000'
           'Neos.Neos.UI:Host':
             resource: '${"resource://" + Neos.Ui.StaticResources.compiledResourcePackage() + "/Public/JavaScript/Host.js"}'
+            configuration: '${Configuration.setting(''Neos.Neos.Ui'')}'
             position: 'start 900'
 
         stylesheets:

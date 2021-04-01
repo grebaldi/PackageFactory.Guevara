@@ -1,0 +1,5 @@
+Neos:
+  Neos:
+    Ui:
+      graphQL:
+        endpointPath: /neos/ui/graphql
