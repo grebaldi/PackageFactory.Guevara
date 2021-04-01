@@ -1,0 +1,31 @@
+{
+  "name": "@neos-project/graphql-client",
+  "version": "7.0.0",
+  "description": "GraphQL client for the Neos User Interface",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "yarn jest -w 2 --coverage",
+    "test:watch": "yarn jest --watch",
+    "build": "exit 0",
+    "build:watch": "exit 0",
+    "clean": "rimraf ./lib ./dist",
+    "lint": "eslint src && stylelint 'src/**/*.css'",
+    "jest": "NODE_ENV=test jest"
+  },
+  "dependencies": {
+    "@urql/core": "^2.0.0",
+    "graphql": "^15.5.0",
+    "runtypes": "^5.2.0"
+  },
+  "devDependencies": {
+    "@neos-project/babel-preset-neos-ui": "7.0.0",
+    "@neos-project/build-essentials": "7.0.0",
+    "@neos-project/jest-preset-neos-ui": "7.0.0",
+    "redux-saga-test-plan": "^3.6.0"
+  },
+  "license": "GNU GPLv3",
+  "jest": {
+    "preset": "@neos-project/jest-preset-neos-ui"
+  }
+}

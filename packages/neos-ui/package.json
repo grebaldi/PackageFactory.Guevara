@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@neos-project/brand": "^1.1.0",
+    "@neos-project/graphql-client": "^7.0.0",
     "@neos-project/neos-ui-backend-connector": "7.0.0",
     "@neos-project/neos-ui-ckeditor-bindings": "7.0.0",
     "@neos-project/neos-ui-ckeditor5-bindings": "7.0.0",

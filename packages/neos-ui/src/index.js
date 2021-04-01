@@ -14,6 +14,8 @@ import {delay} from '@neos-project/utils-helpers';
 import backend from '@neos-project/neos-ui-backend-connector';
 import {handleActions} from '@neos-project/utils-redux';
 
+import {query} from "@neos-project/graphql-client";
+
 import * as system from './System';
 import localStorageMiddleware from './localStorageMiddleware';
 import clipboardMiddleware from './clipboardMiddleware';
@@ -49,7 +51,11 @@ require('@neos-project/neos-ui-validators/src/manifest');
 require('@neos-project/neos-ui-i18n/src/manifest');
 require('@neos-project/neos-ui-sagas/src/manifest');
 
-alert(document.currentScript.dataset.configuration);
+query(`
+    query {
+        ping
+    }
+`).toPromise().then(res => console.log(res));
 
 //
 // The main application

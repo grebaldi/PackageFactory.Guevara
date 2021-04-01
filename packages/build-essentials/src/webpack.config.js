@@ -48,6 +48,11 @@ const webpackConfig = {
                 }]
             },
             {
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: 'javascript/auto'
+            },
+            {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: [{

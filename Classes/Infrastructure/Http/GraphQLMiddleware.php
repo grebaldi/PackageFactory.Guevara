@@ -68,6 +68,14 @@ final class GraphQLMiddleware implements MiddlewareInterface
      */
     protected $packageManager;
 
+
+    /**
+     * @Flow\InjectConfiguration(path="graphQL.endpointPath")
+     * @var string
+     */
+    protected $endpointPath;
+
+
     /**
      * @return SimpleCache
      */
@@ -98,7 +106,7 @@ final class GraphQLMiddleware implements MiddlewareInterface
      */
     protected function getEndpointPath(): string
     {
-        return '/graphql';
+        return $this->endpointPath ?? '/graphql';
     }
 
     /**
@@ -119,7 +127,7 @@ final class GraphQLMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        if ($request->getUri()->getPath() === '/graphql') {
+        if ($request->getUri()->getPath() === $this->getEndpointPath()) {
             if ($request->getMethod() === 'GET') {
                 return $this->respondWithGraphiQLClient($request);
             } else if ($request->getMethod() === 'POST') {
@@ -172,7 +180,7 @@ final class GraphQLMiddleware implements MiddlewareInterface
             ->addTypeNamespace('Neos\\Neos\\Ui\\Presentation')
             ->createSchema();
         $middleware = (new Psr15GraphQLMiddlewareBuilder($schema))
-            ->setUrl('/graphql')
+            ->setUrl($this->getEndpointPath())
             ->setResponseFactory(new ResponseFactory())
             ->setStreamFactory(new StreamFactory())
             ->createMiddleware();

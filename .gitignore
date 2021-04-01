@@ -27,6 +27,7 @@ Packages/
 node_modules/
 packages/*/yarn.lock
 composer.lock
+yarn-error.log
 
 #
 # Compiled assets.
