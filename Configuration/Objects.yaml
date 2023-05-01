@@ -1,0 +1,2 @@
+Neos\Neos\Fusion\ContentElementWrappingStrategyInterface:
+  className: Neos\Neos\Ui\Service\ContentElementWrappingStrategy
