@@ -14,9 +14,10 @@ services:
       # Enable GD
       PHP_EXTENSION_GD: 1
       COMPOSER_CACHE_DIR: /home/circleci/.composer/cache
+      DB_HOST: db
 
   db:
-    image: mysql:8
+    image: mariadb:10.4
     environment:
       MYSQL_DATABASE: neos
       MYSQL_ROOT_PASSWORD: not_a_real_password

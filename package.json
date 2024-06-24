@@ -15,7 +15,8 @@
     "lint": "tsc --noemit && stylelint 'packages/*/src/**/*.css' && yarn eslint 'packages/*/src/**/*.{js,jsx,ts,tsx}'",
     "test": "NODE_ENV=test jest --testMatch '**/packages/*/src/**/*.spec.{js,jsx,ts,tsx}'",
     "test-watch": "yarn test --watch",
-    "test-update-snapshots": "yarn test -u"
+    "test-update-snapshots": "yarn test -u",
+    "e2e": "./Scripts/e2e"
   },
   "engines": {
     "node": "~20"

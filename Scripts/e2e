@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+
+##
+## This file is part of the Neos.Neos.Ui package.
+##
+## (c) Contributors of the Neos Project - www.neos.io
+##
+## This package is Open Source Software. For the full copyright and license
+## information, please view the LICENSE file which was distributed with this
+## source code.
+##
+
+set -euo pipefail
+
+function dc() {
+    # use the docker composer plugin
+    docker compose -f ./Tests/IntegrationTests/docker-compose.neos-dev-instance.yaml $@
+}
+
+e2e_help() {
+    if type "e2e_${1:-""}_help" >/dev/null 2>&1; then
+        "e2e_${1}_help"
+    else
+        cat <<USAGE
+Neos UI E2E Tests
+    Run the Neos UI End-to-End Tests on your local machine.
+
+Usage:
+    yarn e2e <command> [options]
+
+Available commands:
+    help
+        Shows this help message
+
+    help <command>
+        Shows a help message on the given command
+
+    prepare
+        Starts the docker environment for the End-to-End Tests
+
+    run
+        Runs all test or a specific test if given
+
+    shutdown
+        Stops the docker environment for the End-to-End Tests
+
+Available Options:
+    -h, --help
+        Shows this help message
+USAGE
+    fi
+}
+
+#
+# PREPARE
+#
+
+e2e_prepare_help() {
+    cat <<USAGE
+Neos UI E2E Tests
+
+Command: prepare
+
+    Starts the docker environment for the End-to-End Tests
+
+Usage: yarn e2e prepare
+USAGE
+}
+e2e_prepare() {
+echo ""
+echo "#############################################################################"
+echo "# Start docker environment...                                               #"
+echo "#############################################################################"
+dc up -d
+dc exec -T php bash <<-'BASH'
+    sudo chown -R docker:docker /home/circleci/
+BASH
+
+echo ""
+echo "#############################################################################"
+echo "# Install dependencies...                                                   #"
+echo "#############################################################################"
+dc exec -T php bash <<-'BASH'
+    cd /usr/src/app
+    mkdir -p Configuration
+    sudo chown -R docker:docker .
+
+    ln -sf /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/composer.json /usr/src/app/composer.json
+    ln -sf /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/Configuration/Settings.yaml /usr/src/app/Configuration/Settings.yaml
+    ln -sfn /usr/src/neos-ui/Tests/IntegrationTests/TestDistribution/DistributionPackages /usr/src/app/DistributionPackages
+
+    composer install
+BASH
+
+echo ""
+echo "#############################################################################"
+echo "# Initialize Neos...                                                        #"
+echo "#############################################################################"
+dc exec -T php bash <<-'BASH'
+    rm -rf Packages/Application/Neos.Neos.Ui
+    ln -s /usr/src/neos-ui /usr/src/app/Packages/Application/Neos.Neos.Ui
+
+    ./flow flow:cache:flush
+    ./flow flow:cache:warmup
+    ./flow doctrine:migrate
+    ./flow user:create --username=admin --password=admin --first-name=Admin --last-name=Admington --roles=Administrator || true
+    ./flow user:create --username=editor --password=editor --first-name=Editor --last-name=McEditworth --roles=Editor || true
+
+    ./flow cr:setup --content-repository onedimension
+    ./flow cr:import --content-repository onedimension --path ./DistributionPackages/Neos.Test.OneDimension/Resources/Private/Content
+    # Connect to a Neos site, todo the nodeTypeName parameter is obsolete but necessary
+    ./flow site:create neos-test-onedimension Neos.Test.OneDimension Neos.TestNodeTypes:Document.HomePage
+    ./flow domain:add neos-test-onedimension onedimension.localhost --port 8081
+
+    ./flow cr:setup --content-repository twodimensions
+    ./flow cr:import --content-repository twodimensions --path ./DistributionPackages/Neos.Test.TwoDimensions/Resources/Private/Content
+    # Connect to a Neos site, todo the nodeTypeName parameter is obsolete but necessary
+    ./flow site:create neos-test-twodimensions Neos.Test.TwoDimensions Neos.TestNodeTypes:Document.HomePage
+    ./flow domain:add neos-test-twodimensions twodimensions.localhost --port 8081
+
+    ./flow resource:publish
+BASH
+
+echo ""
+echo "#############################################################################"
+echo "# Start Flow Server...                                                      #"
+echo "#############################################################################"
+dc exec -T php bash <<-'BASH'
+    ./flow server:run --port 8081 --host 0.0.0.0 &
+BASH
+}
+
+#
+# RUN
+#
+e2e_run_help() {
+    cat <<USAGE
+Neos UI E2E Tests
+
+Command: run
+
+    Runs all test or a specific test if given
+
+Usage:
+    yarn e2e run
+    yarn e2e run 1Dimension/syncing.e2e.js
+
+Options:
+    -b, --browser
+        The browser to use for End-to-End Testing.
+        Default: firefox:headless
+        Examples: firefox, chromium
+
+    --debug-on-fail
+        Pause test run when a failure occurs
+
+    --speed
+        The speed at which to run the testing steps
+        Default: 1
+        Examples: 0.5 (to run at half the speed)
+USAGE
+}
+e2e_run() {
+    pattern="*/*.e2e.js"
+    browser="firefox:headless"
+    params=""
+
+    for i in "$@"; do
+        case $i in
+            -b=*|--browser=*)
+                browser="${i#*=}"
+                shift
+                ;;
+            -d|--debug-on-fail)
+                params="${params} --debug-on-fail"
+                shift
+                ;;
+            --speed=*)
+                params="${params} --speed=${i#*=}"
+                shift
+                ;;
+            *)
+                pattern="${i}"
+                ;;
+        esac
+    done
+
+    pattern="$(pwd)/Tests/IntegrationTests/Fixtures/${pattern}"
+
+    yarn run testcafe "${browser}" "${pattern}" \
+        --selector-timeout=10000 --assertion-timeout=30000 ${params} --speed=0.3
+}
+
+#
+# SHUTDOWN
+#
+e2e_shutdown_help() {
+    cat <<USAGE
+Neos UI E2E Tests
+
+Command: shutdown
+
+    Stops the docker environment for the End-to-End Tests
+
+Usage: yarn e2e shutdown
+USAGE
+}
+e2e_shutdown() {
+    dc down --volumes --remove-orphans
+}
+
+case $1 in
+    -h|--help|help)
+        shift
+        e2e_help "$@"
+        exit 0
+        ;;
+esac
+
+if type "e2e_${1}" >/dev/null 2>&1; then
+    command="${1}"; shift
+    "e2e_${command}" "${@}"
+    exit 0
+else
+    echo "Unknown command: ${1}"
+    exit 1
+fi
